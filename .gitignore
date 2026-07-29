@@ -1,0 +1,23 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# Jupyter
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/*
+
+# Personal learning notes (never pushed to GitHub)
+docs/concepts.md
+
+# Personal planning docs (kept local)
+Archive/
+35_Day_LLM_Engineering_Plan.docx
+~$*.docx
+dev-setup-guide.md

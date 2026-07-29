@@ -1,0 +1,13 @@
+[project]
+name = "llm-from-scratch"
+version = "0.1.0"
+description = "Building a working, from-scratch understanding of how LLMs are architected, pretrained, and finetuned — following a self-directed 35-day engineering plan."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "matplotlib>=3.11.1",
+    "numpy>=2.5.1",
+    "pandas>=3.0.3",
+    "seaborn>=0.13.2",
+    "torch>=2.13.0",
+]
