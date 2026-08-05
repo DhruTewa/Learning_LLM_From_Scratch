@@ -9,5 +9,6 @@ dependencies = [
     "numpy>=2.5.1",
     "pandas>=3.0.3",
     "seaborn>=0.13.2",
+    "tiktoken>=0.13.0",
     "torch>=2.13.0",
 ]
