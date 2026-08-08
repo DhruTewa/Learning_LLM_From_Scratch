@@ -19,12 +19,19 @@ Scope is deliberately trimmed to what directly serves that goal: tokenization, a
 ## Current Status
 
 **Phase 1 — Neural Network Foundations: Completed ✅**
+**Phase 2 — Text Data & Embeddings: Completed ✅**
 
 ## Phase 1 — Neural Network Foundations
 
 Covers the neuron computation, architecture design, weight initialization, activation functions, forward propagation, loss functions, backpropagation, optimizers, dropout, and training loop — the full sequential design process below, then applied hands-on to a real dataset (`Foundation_Concepts/Neural Network Foundation/`) building both a classification and a regression network.
 
 ![Neural Network Design Process Overview](Foundation_Concepts/Neural%20Network%20Foundation/Neural_Network_Design_Process_Overview.png)
+
+## Phase 2 — Text Data & Embeddings
+
+Covers tokenization from scratch through to model-ready batches: byte-pair encoding with `tiktoken`, a sliding-window `Dataset` that turns raw text into input/target token sequences, and a `DataLoader` for batching — built and exercised hands-on in `Foundation_Concepts/LLM_Design_Stage_1/`.
+
+![Stage 1 — Step 1 Data Preparation](Foundation_Concepts/LLM_Design_Stage_1/Stage1_%20Step1_DataPrep.png)
 
 ## Primary Resources
 
@@ -37,11 +44,16 @@ Covers the neuron computation, architecture design, weight initialization, activ
 ```
 .
 ├── Foundation_Concepts/
-│   └── Neural Network Foundation/
-│       ├── neural_network_design_pocket_reference.md   # sequential 10-step design reference
-│       ├── 01_classification_churn.ipynb               # classification NN, built section-by-section
-│       ├── Churn_Modelling.csv                          # dataset used for Phase 1 exercises
-│       └── Neural_Network_Design_Process_Overview.png
+│   ├── Neural Network Foundation/
+│   │   ├── neural_network_design_pocket_reference.md   # sequential 10-step design reference
+│   │   ├── 01_classification_churn.ipynb               # classification NN, built section-by-section
+│   │   ├── Churn_Modelling.csv                          # dataset used for Phase 1 exercises
+│   │   └── Neural_Network_Design_Process_Overview.png
+│   └── LLM_Design_Stage_1/
+│       ├── Data_Prepration.py                           # tokenizer, sliding-window dataset, dataloader
+│       ├── the-verdict.txt                              # sample text used for Phase 2 exercises
+│       ├── Stage1_ Step1_DataPrep.png
+│       └── Misc/                                        # earlier tokenizer exploration scripts
 ├── pyproject.toml
 ├── main.py
 └── README.md
