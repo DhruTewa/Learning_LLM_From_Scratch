@@ -3,12 +3,23 @@ import tiktoken
 import torch
 from torch.utils.data import Dataset,DataLoader
 
-vocab_size = 6 # 6 word vocab
-output_dim = 3 # embedding size is 3
-input_id = torch.tensor([2,3,5,1])
+# basic attention understanding
 
-torch.manual_seed(123)
-embedding_layer = torch.nn.Embedding(vocab_size,output_dim)
-print(embedding_layer.weight)
-print("-"* 80)
-print(embedding_layer(input_id))
+import torch
+inputs = torch.tensor(
+    [[0.43,0.15,0.89], # Your,
+     [0.55,0.87,0.66], # Journey,
+     [0.57,0.85,0.64], # Start
+     [0.22,0.58,0.33], # with
+     [0.77,0.25,0.10], # single
+     [0.05,0.80,0.55]] # step
+     )
+query = inputs[1]
+attn_score_2 = torch.empty(inputs.shape[0])
+for i,x_i in enumerate(inputs):
+    attn_score_2[i] = torch.dot(x_i,query)
+print(attn_score_2)    
+#print(query)
+attn_weight_2 = torch.softmax(attn_score_2,dim=0)
+print("Attention wegihts:",attn_weight_2)
+print("Sum:", attn_weight_2.sum())
