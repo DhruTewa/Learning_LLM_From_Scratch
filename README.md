@@ -20,6 +20,7 @@ Scope is deliberately trimmed to what directly serves that goal: tokenization, a
 
 **Phase 1 — Neural Network Foundations: Completed ✅**
 **Phase 2 — Text Data & Embeddings: Completed ✅**
+**Phase 3 — Attention & GPT Architecture: In Progress 🔄 (attention mechanisms complete)**
 
 ## Phase 1 — Neural Network Foundations
 
@@ -32,6 +33,12 @@ Covers the neuron computation, architecture design, weight initialization, activ
 Covers tokenization from scratch through to model-ready batches: byte-pair encoding with `tiktoken`, a sliding-window `Dataset` that turns raw text into input/target token sequences, and a `DataLoader` for batching — built and exercised hands-on in `Foundation_Concepts/LLM_Design_Stage_1/`.
 
 ![Stage 1 — Step 1 Data Preparation](Foundation_Concepts/LLM_Design_Stage_1/Stage1_%20Step1_DataPrep.png)
+
+## Phase 3 — Attention & GPT Architecture
+
+In progress. Covers the attention mechanism from first principles: simplified self-attention, self-attention with trainable query/key/value weights, causal (masked) attention with dropout, and multi-head attention (both the simple parallel-heads wrapper and the more efficient single-weight-matrix implementation) — built and exercised hands-on in `Foundation_Concepts/LLM_Design_Stage_1/`.
+
+![Stage 1 — Step 2 Attention Mechanism](Foundation_Concepts/LLM_Design_Stage_1/Stage1_Step2_Attention_Mechanism.png)
 
 ## Primary Resources
 
@@ -51,8 +58,10 @@ Covers tokenization from scratch through to model-ready batches: byte-pair encod
 │   │   └── Neural_Network_Design_Process_Overview.png
 │   └── LLM_Design_Stage_1/
 │       ├── Data_Prepration.py                           # tokenizer, sliding-window dataset, dataloader
+│       ├── Attention_Mechanism.py                       # self-attention, causal attention, multi-head attention
 │       ├── the-verdict.txt                              # sample text used for Phase 2 exercises
 │       ├── Stage1_ Step1_DataPrep.png
+│       ├── Stage1_Step2_Attention_Mechanism.png
 │       └── Misc/                                        # earlier tokenizer exploration scripts
 ├── pyproject.toml
 ├── main.py
