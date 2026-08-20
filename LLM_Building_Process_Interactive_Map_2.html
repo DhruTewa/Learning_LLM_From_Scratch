@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Building an LLM — The 3-Stage Process</title>
+<title>Building an LLM: The 3-Stage Process</title>
 <style>
   :root {
     --bg: #fdfbf0;
@@ -103,7 +103,7 @@
   .zone-label { display: block; font-weight: 800; font-size: 1.02rem; color: var(--accent); margin: 0 0 18px; }
   /* zones wrap individually-checkable step cards, so they must NOT use
      filter to dim (a filter on a parent visually grays its children too,
-     even a child that's individually spotted) — swap the color variables
+     even a child that's individually spotted). This rule swaps the color variables
      instead, which only affects the zone's own background/border/label. */
   .zone.dimmed { filter: none; opacity: 1; --accent: #b6b1a0; --tint: #f2f0e6; }
 
@@ -326,6 +326,12 @@
   .dd-section-intro { font-size: 1.08rem; color: var(--ink-soft); line-height: 1.62; max-width: 74ch; margin: 0 0 22px; }
   .dd-explain { font-size: 1.05rem; color: var(--ink-soft); line-height: 1.65; max-width: 74ch; margin-top: 18px; }
 
+  .dd-bullets { margin: 0 0 22px; padding-left: 24px; max-width: 74ch; }
+  .dd-bullets li { font-size: 1.05rem; color: var(--ink-soft); line-height: 1.55; margin-bottom: 8px; }
+  .dd-bullets li:last-child { margin-bottom: 0; }
+  .dd-section-intro.dd-bullets { margin-bottom: 22px; }
+  .dd-explain.dd-bullets { margin-top: 18px; margin-bottom: 0; }
+
   .dd-visual {
     background: var(--paper); border: 1.8px solid var(--line); border-radius: 16px;
     padding: 26px 24px; overflow-x: auto;
@@ -387,6 +393,42 @@
     padding: 22px 24px; margin-top: 8px; font-size: 1.08rem; color: var(--ink); line-height: 1.6;
   }
 
+  /* ---------------- Step 2: interactive attention explorer ---------------- */
+  .attn-sentence { font-size: 1.22rem; line-height: 2.5; margin-bottom: 22px; }
+  .attn-sentence .attn-word {
+    cursor: pointer; padding: 4px 9px; border-radius: 7px; margin-right: 4px;
+    border: 1.6px solid transparent; font-weight: 600;
+  }
+  .attn-sentence .attn-word:hover { border-color: var(--line); background: #f2f0e6; }
+  .attn-sentence .attn-word.active { background: var(--pink); border-color: var(--line); font-weight: 780; }
+
+  .attn-bars { display: flex; align-items: flex-end; gap: 8px; height: 150px; margin: 4px 0 16px; padding: 0 2px; border-bottom: 2px solid var(--line); }
+  .attn-bar-col { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; flex: 1; height: 100%; gap: 6px; }
+  .attn-bar { width: 100%; max-width: 36px; background: var(--blue); border: 1.6px solid var(--line); border-radius: 5px 5px 0 0; transition: height .35s ease; }
+  .attn-bar.self { background: var(--pink); }
+  .attn-bar.dropped {
+    background: repeating-linear-gradient(45deg, #e5e2d4, #e5e2d4 5px, #f2f0e6 5px, #f2f0e6 10px);
+    opacity: .7;
+  }
+  .attn-bar-label { font-size: .8rem; color: var(--ink-soft); text-align: center; }
+  .attn-bar-pct { font-size: .74rem; color: var(--muted); font-weight: 700; }
+  .attn-hint { font-size: .95rem; color: var(--ink-soft); margin: 4px 0 0; min-height: 1.4em; }
+
+  .mask-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 1.08rem; }
+  .mask-word { padding: 7px 13px; border-radius: 8px; border: 1.6px solid var(--line); background: var(--blue); font-weight: 600; }
+  .mask-word.current { background: var(--pink); font-weight: 780; }
+  .mask-word.blocked { background: #f0eee0; border-style: dashed; color: var(--muted); text-decoration: line-through; opacity: .75; }
+
+  .res-box { text-align: center; }
+  .res-box-label { font-size: .88rem; font-weight: 700; color: var(--ink-soft); margin-bottom: 10px; }
+  .res-op { font-size: 1.5rem; font-weight: 800; color: var(--ink-soft); }
+
+  .mh-heads { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; margin-bottom: 18px; }
+  .mh-head { background: var(--paper); border: 1.6px solid var(--line-soft); border-radius: 12px; padding: 14px 16px; text-align: center; flex: 1 1 170px; }
+  .mh-head-label { font-size: .8rem; font-weight: 700; color: var(--muted); margin-bottom: 10px; text-transform: uppercase; letter-spacing: .03em; }
+  .mh-head-pair { font-size: 1.06rem; font-weight: 650; }
+  .mh-arrow-note { text-align: center; color: var(--ink-soft); font-weight: 650; margin: 4px 0 18px; }
+
   :focus-visible { outline: 2px solid var(--blue-b); outline-offset: 2px; }
   @media (prefers-reduced-motion: reduce) {
     .stepcard, .conn-pill, .explore .arrow, #playFlowBtn { transition: none; }
@@ -412,7 +454,7 @@
       <span class="lg" data-group="s3"><span class="dot"></span>Specialized output</span>
     </div>
 
-    <div class="devnote">🚧 Deep-dive pages currently show placeholder content — real visuals and writing go in as each post ships.</div>
+    <div class="devnote">🚧 Some deep-dive pages still show placeholder content. Final visuals and text go in as each post ships.</div>
 
     <div class="flow-control">
       <button id="playFlowBtn" type="button">▶ Play the build flow</button>
@@ -433,7 +475,7 @@
         <div class="flow-arrow"><span class="stem"></span><span class="arrowhead-down"></span></div>
         <div class="hub" data-group="s1">
           <span class="hub-title">Building an LLM</span>
-          <span class="hub-sub">Implements the data sampling and the basic mechanism — attention and architecture assembled into one model</span>
+          <span class="hub-sub">This stage implements data sampling and the basic mechanism. Attention and architecture combine into one model.</span>
         </div>
       </section>
 
@@ -450,7 +492,7 @@
         <div class="flow-arrow"><span class="stem"></span><span class="arrowhead-down"></span></div>
         <div class="hub" data-group="s2">
           <span class="hub-title">Foundation Model</span>
-          <span class="hub-sub">Pretrained on unlabeled data — a general-purpose base, ready to be specialized</span>
+          <span class="hub-sub">This model trains on unlabeled data. It is a general-purpose base, ready for specialization.</span>
         </div>
       </section>
 
@@ -476,7 +518,7 @@
             <div class="outputcard">
               <span class="badge">✓ Specialized model</span>
               <h3>Classifier</h3>
-              <p>Trained on a dataset with class labels — e.g. spam vs. not spam.</p>
+              <p>This model trains on a dataset with class labels. Example: spam or not spam.</p>
             </div>
           </div>
           <div class="branch-col">
@@ -485,7 +527,7 @@
             <div class="outputcard">
               <span class="badge">✓ Specialized model</span>
               <h3>Personal Assistant</h3>
-              <p>Trained on an instruction dataset — follows directions, holds a conversation.</p>
+              <p>This model trains on an instruction dataset. It follows directions and holds a conversation.</p>
             </div>
             <span class="data-caption">↑ Instruction dataset</span>
           </div>
@@ -523,23 +565,23 @@
 
   const STEPS = [
     { num: 1, group: "s1", kind: "card", icon: "📄", title: "Data Preparation & Sampling",
-      desc: "Turning raw text into token sequences a model can learn from — sliding-window sampling creates the input/target pairs the model trains on." },
+      desc: "This step turns raw text into token sequences. A sliding window creates the input and target pairs for training." },
     { num: 2, group: "s1", kind: "card", icon: "🧠", title: "Attention Mechanism",
-      desc: "Teaching the model which words to focus on — the mechanism that replaced slow, sequential memory with direct word-to-word connections." },
+      desc: "This step teaches the model which words to focus on. It replaces slow, sequential memory with direct word-to-word connections." },
     { num: 3, group: "s1", kind: "card", icon: "🧩", title: "LLM Architecture",
-      desc: "Assembling attention, normalization, and feed-forward layers into a transformer block, then stacking those blocks into a full GPT model." },
+      desc: "This step assembles attention, normalization, and feed-forward layers into a transformer block. It stacks these blocks into a full GPT model." },
     { num: 4, group: "pre", kind: "pill", icon: "⚡", title: "Pretraining",
-      desc: "Training the assembled architecture on raw text to predict the next token — the step that turns an architecture into a foundation model." },
+      desc: "This step trains the architecture on raw text to predict the next token. It turns the architecture into a foundation model." },
     { num: 5, group: "s2", kind: "card", icon: "🔁", title: "Training Loop",
-      desc: "The optimizer, batching, and gradient steps that actually update the model's weights, run over and over across the training data." },
+      desc: "This step runs the optimizer, batching, and gradient updates. It repeats over the full training data." },
     { num: 6, group: "s2", kind: "card", icon: "📊", title: "Model Evaluation",
-      desc: "Tracking loss curves and sample generations along the way, to know whether training is actually working — or quietly failing." },
+      desc: "This step tracks loss curves and sample generations. It shows whether training works or fails." },
     { num: 7, group: "s2", kind: "card", icon: "📥", title: "Load Pretrained Weights",
-      desc: "Swapping in real, publicly released GPT-2 weights to validate the from-scratch architecture against a known-good model." },
+      desc: "This step loads real, public GPT-2 weights. It validates the from-scratch architecture against a known-good model." },
     { num: 8, group: "ft", kind: "pill", icon: "🏷️", title: "Fine-tuning → Classifier",
-      desc: "Specializing the foundation model with a classification head, so it makes a discrete prediction instead of generating text." },
+      desc: "This step adds a classification head to the foundation model. The model now makes a discrete prediction instead of generating text." },
     { num: 9, group: "ft", kind: "pill", icon: "💬", title: "Fine-tuning → Personal Assistant",
-      desc: "Specializing the foundation model on instruction data, so it learns to follow directions and hold a conversation." },
+      desc: "This step trains the foundation model on instruction data. The model learns to follow directions and hold a conversation." },
   ];
 
   const GROUP_LABEL = {
@@ -749,11 +791,12 @@
   function openDeepDive(num) {
     const step = STEPS.find(s => s.num === num);
     if (!step) return;
-    ddInner.innerHTML = (num === 1) ? ddTemplateStep1() : ddTemplate(step);
+    ddInner.innerHTML = (num === 1) ? ddTemplateStep1() : (num === 2) ? ddTemplateStep2() : ddTemplate(step);
     deepdive.hidden = false;
     window.scrollTo(0, 0);
     document.getElementById("backBtn").focus();
     if (num === 1) { wireJumpNav(); wireDataSamplingStepper(); }
+    if (num === 2) { wireJumpNav(); wireAttentionExplorer(); }
   }
 
   function closeDeepDive() { deepdive.hidden = true; }
@@ -922,6 +965,169 @@
     `;
   }
 
+  function ddTemplateStep2() {
+    return `
+      <span class="dd-tag" style="--accent:var(--blue-b);--fill:var(--blue)">Step 2 · Stage 1 · Building an LLM</span>
+      <h2>🧠 Attention Mechanism</h2>
+      <p class="dd-lede">Same sentence, new question: <em>"Max didn't cross the street because he was too tired."</em> — how does a model know "he" means Max? Attention is built up in five stages, each one fixing a limitation of the last, ending in the exact block a real GPT model runs.</p>
+
+      <div class="dd-visual">
+        <div class="dd-roadmap">
+          <div class="dd-roadmap-box">1) Simple attention</div>
+          <span class="arrowhead-right"></span>
+          <div class="dd-roadmap-box">2) Causal masking</div>
+          <span class="arrowhead-right"></span>
+          <div class="dd-roadmap-box">3) Dropout</div>
+          <span class="arrowhead-right"></span>
+          <div class="dd-roadmap-box">4) Residual connections</div>
+          <span class="arrowhead-right"></span>
+          <div class="dd-roadmap-box">5) Multi-head attention</div>
+        </div>
+      </div>
+
+      <nav class="dd-jumpnav">
+        <a href="#dd-s2-simple">1. Simple attention</a>
+        <a href="#dd-s2-causal">2. Causal masking</a>
+        <a href="#dd-s2-dropout">3. Dropout</a>
+        <a href="#dd-s2-residual">4. Residual connections</a>
+        <a href="#dd-s2-multihead">5. Multi-head attention</a>
+      </nav>
+
+      <section class="dd-section" id="dd-s2-simple">
+        <div class="dd-section-head"><span class="dd-section-num">1</span><span class="dd-section-title">Simple Self-Attention</span></div>
+        <p class="dd-section-intro">Every word starts by asking a question: "what here is relevant to me?" Click any word below to see which other words it pays the most attention to.</p>
+        <div class="dd-visual">
+          <div class="attn-sentence" id="attn-sentence"></div>
+          <div class="attn-bars" id="attn-bars"></div>
+          <p class="attn-hint" id="attn-hint"></p>
+        </div>
+        <p class="dd-explain">Each word is converted into three vectors — a Query (what it's asking), a Key (what it offers as an answer), and a Value (the content it contributes). Relevance is scored by comparing the Query against every Key, scaling the result by √d_k, then turning it into a probability distribution with softmax — that's the bar chart above. The weighted sum of Value vectors becomes a Context Vector: this is where "he" starts absorbing "Max." The catch: as built so far, every word can see every other word, including ones that come later in the sentence. Fine for reading a finished sentence. Unusable for generating one, word by word.</p>
+      </section>
+
+      <section class="dd-section" id="dd-s2-causal">
+        <div class="dd-section-head"><span class="dd-section-num">2</span><span class="dd-section-title">+ Causal Masking</span></div>
+        <p class="dd-section-intro">Simple self-attention has a problem: while generating text one word at a time, a model can't be allowed to peek at words that don't exist yet. Causal masking fixes that.</p>
+        <div class="dd-visual">
+          <div class="mask-row">
+            <span class="mask-word">Max</span><span class="mask-word">didn't</span><span class="mask-word">cross</span>
+            <span class="mask-word">the</span><span class="mask-word">street</span><span class="mask-word">because</span>
+            <span class="mask-word current">he ← generating this</span>
+            <span class="mask-word blocked">was</span><span class="mask-word blocked">too</span><span class="mask-word blocked">tired</span>
+          </div>
+        </div>
+        <p class="dd-explain">Before the softmax step, every position that comes <em>after</em> the current word gets its score set to negative infinity — contributing exactly zero once softmax runs. The model can no longer "cheat" by looking ahead. This is specific to GPT-style decoder-only models; encoder-only models like BERT skip this step entirely, since they aren't predicting the next token. Now the mechanism is actually usable for generation — but trained this way across millions of examples, it tends to overfit, leaning too hard on specific token relationships it's memorized.</p>
+      </section>
+
+      <section class="dd-section" id="dd-s2-dropout">
+        <div class="dd-section-head"><span class="dd-section-num">3</span><span class="dd-section-title">+ Dropout</span></div>
+        <p class="dd-section-intro">That overfitting risk is what dropout addresses — during training only, a random slice of attention weights gets zeroed out on every pass.</p>
+        <div class="dd-visual">
+          <div class="attn-bars" id="dropout-bars"></div>
+          <p class="attn-hint">Hatched bars were randomly zeroed out this pass — even "Max," the strongest connection "he" has.</p>
+        </div>
+        <p class="dd-explain">It sounds counterproductive — deliberately breaking a connection the model just learned was useful — but that's the point. If "he" can't always lean on "Max" being available, the model is forced to find other, more robust signals for the same relationship too. This solves overfitting for one attention block. But GPT-3 stacks 96 of them — and stacked that deep, a signal can degrade or vanish entirely by the time it reaches the final layer.</p>
+      </section>
+
+      <section class="dd-section" id="dd-s2-residual">
+        <div class="dd-section-head"><span class="dd-section-num">4</span><span class="dd-section-title">+ Residual Connections</span></div>
+        <p class="dd-section-intro">That's what residual connections solve. The attention output doesn't replace the original word embedding — it gets added on top of it.</p>
+        <div class="dd-visual" style="display:flex; align-items:center; justify-content:center; gap:18px; flex-wrap:wrap;">
+          <div class="res-box"><div class="res-box-label">x (original embedding)</div><div class="emb-row">${embSquares(false)}</div></div>
+          <span class="res-op">+</span>
+          <div class="res-box"><div class="res-box-label">Attention(x)</div><div class="emb-row">${embSquares(false)}</div></div>
+          <span class="res-op">=</span>
+          <div class="res-box"><div class="res-box-label">x + Attention(x)</div><div class="emb-row">${embSquares(true)}</div></div>
+        </div>
+        <p class="dd-explain">The original signal is preserved; new context layers on top instead of overwriting it. This preserves gradient flow and lets meaning accumulate across dozens of stacked layers instead of being erased and reinvented at every single one. That gives a solid, stable attention block — but it only captures one kind of relationship per pass. "he → Max" is a coreference link; a sentence also has grammar, cause, and tone all at once. One pass can't hold all of that.</p>
+      </section>
+
+      <section class="dd-section" id="dd-s2-multihead">
+        <div class="dd-section-head"><span class="dd-section-num">5</span><span class="dd-section-title">+ Multi-Head Attention</span></div>
+        <p class="dd-section-intro">Multi-head attention is the fix: run the entire process — Query, Key, Value, masking, dropout, residual — many times in parallel, each head free to specialize.</p>
+        <div class="dd-visual">
+          <div class="mh-heads">
+            <div class="mh-head"><div class="mh-head-label">Head A · reference</div><div class="mh-head-pair">he → Max</div></div>
+            <div class="mh-head"><div class="mh-head-label">Head B · negation</div><div class="mh-head-pair">didn't → cross</div></div>
+            <div class="mh-head"><div class="mh-head-label">Head C · cause</div><div class="mh-head-pair">because → tired</div></div>
+          </div>
+          <div class="mh-arrow-note">↓ concatenate all heads, then one output projection ↓</div>
+          <div class="emb-row" style="justify-content:center;">${embSquares(true)}</div>
+        </div>
+        <p class="dd-explain">GPT-3 runs 96 of these heads at once — not as separate loops, but as one large weight matrix reshaped and split, which is significantly faster than running heads one by one. Once every head has produced its own context vector, they're concatenated and passed through one final linear layer that blends the parallel perspectives back into a single, unified representation. This — masked, dropout-regularized, residual-wrapped, multi-head attention — is the actual block a real GPT model runs, 96 times over, for every single token it generates.</p>
+      </section>
+
+      <div class="dd-recap">From a bare Query/Key/Value match to the full multi-head attention block GPT models actually run — that's Step 2, done. Every one of these stacked blocks is about to get wrapped in the rest of the architecture: LayerNorm, GELU, and the full transformer block. That's Step 3.</div>
+    `;
+  }
+
+  function wireAttentionExplorer() {
+    const words = ["Max", "didn't", "cross", "the", "street", "because", "he", "was", "too", "tired"];
+    const relations = [[6, 9], [2], [1, 4], [4], [2, 3], [9], [0], [6, 9], [9], [6, 8, 5]];
+
+    function weightsFor(idx) {
+      const n = words.length;
+      const w = new Array(n).fill(0.02);
+      w[idx] = 0.18;
+      const share = 0.7 / relations[idx].length;
+      relations[idx].forEach((r) => { w[r] += share; });
+      const sum = w.reduce((a, b) => a + b, 0);
+      return w.map((v) => v / sum);
+    }
+
+    function hintFor(idx) {
+      const names = relations[idx].map((r) => '"' + words[r] + '"');
+      const joined = names.length > 1 ? names.slice(0, -1).join(", ") + " and " + names[names.length - 1] : names[0];
+      return '"' + words[idx] + '" attends most strongly to ' + joined + ".";
+    }
+
+    function barsHTML(weights, activeIdx) {
+      const maxW = Math.max(...weights);
+      return weights.map((wt, i) => {
+        const pct = Math.round(wt * 100);
+        const h = Math.max(6, Math.round((wt / maxW) * 100));
+        return '<div class="attn-bar-col"><span class="attn-bar-pct">' + pct + '%</span><div class="attn-bar' +
+          (i === activeIdx ? " self" : "") + '" style="height:' + h + '%"></div><span class="attn-bar-label">' + words[i] + "</span></div>";
+      }).join("");
+    }
+
+    // ---- Stage 1: interactive click explorer ----
+    const sentenceEl = ddInner.querySelector("#attn-sentence");
+    if (sentenceEl) {
+      const barsEl = ddInner.querySelector("#attn-bars");
+      const hintEl = ddInner.querySelector("#attn-hint");
+
+      function render(activeIdx) {
+        sentenceEl.innerHTML = words.map((w, i) =>
+          '<span class="attn-word' + (i === activeIdx ? " active" : "") + '" data-idx="' + i + '">' + w + "</span>"
+        ).join("");
+        barsEl.innerHTML = barsHTML(weightsFor(activeIdx), activeIdx);
+        hintEl.textContent = hintFor(activeIdx);
+        sentenceEl.querySelectorAll(".attn-word").forEach((el) => {
+          el.addEventListener("click", () => render(Number(el.dataset.idx)));
+        });
+      }
+      render(6); // start on "he" -> Max
+    }
+
+    // ---- Stage 3: static dropout illustration (built on "he"'s weights) ----
+    const dropoutEl = ddInner.querySelector("#dropout-bars");
+    if (dropoutEl) {
+      const idx = 6; // "he"
+      const w = weightsFor(idx);
+      const dropped = [0, 9]; // Max and tired get zeroed this pass
+      const maxW = Math.max(...w);
+      dropoutEl.innerHTML = w.map((wt, i) => {
+        const isDropped = dropped.includes(i);
+        const effective = isDropped ? 0 : wt;
+        const pct = Math.round(effective * 100);
+        const h = Math.max(6, Math.round((Math.max(effective, 0.02) / maxW) * 100));
+        const cls = i === idx ? "self" : (isDropped ? "dropped" : "");
+        return '<div class="attn-bar-col"><span class="attn-bar-pct">' + pct + '%</span><div class="attn-bar ' + cls +
+          '" style="height:' + h + '%"></div><span class="attn-bar-label">' + words[i] + "</span></div>";
+      }).join("");
+    }
+  }
+
   document.getElementById("map").addEventListener("click", (e) => {
     const target = e.target.closest("[data-step]");
     if (target) openDeepDive(Number(target.dataset.step));
@@ -1034,19 +1240,19 @@
     const outAssistant = outputs[1];
 
     const hops = [
-      { to: step(1), label: "Step 1 — Data prep & sampling: raw text becomes token sequences the model can train on." },
-      { from: step(1), to: step(2), label: "Step 2 — Attention: the model learns which words to focus on." },
-      { from: step(2), to: step(3), label: "Step 3 — Architecture: attention and feed-forward layers stack into a full GPT model." },
-      { from: step(3), to: hub1, label: "Three foundations combine into one architecture: Building an LLM." },
-      { from: hub1, to: step(4), label: "Step 4 — Pretraining: the architecture learns from raw text, one next-token prediction at a time." },
-      { from: step(4), to: step(5), label: "Step 5 — Training loop: the optimizer and gradient steps update the weights." },
-      { from: step(5), to: step(6), label: "Step 6 — Model evaluation: loss curves and sample generations reveal whether it's working." },
-      { from: step(6), to: step(7), label: "Step 7 — Load pretrained weights: real GPT-2 weights validate the architecture." },
-      { from: step(7), to: hub2, label: "The result: a general-purpose Foundation Model." },
-      { from: hub2, to: step(8), label: "Step 8 — Fine-tune on labeled data…" },
-      { from: step(8), to: outClassifier, label: "…to specialize it into a Classifier." },
-      { from: hub2, to: step(9), label: "Step 9 — Fine-tune on instructions…" },
-      { from: step(9), to: outAssistant, label: "…to specialize it into a Personal Assistant." },
+      { to: step(1), label: "Step 1. Data prep and sampling. Raw text becomes token sequences the model can train on." },
+      { from: step(1), to: step(2), label: "Step 2. Attention. The model learns which words to focus on." },
+      { from: step(2), to: step(3), label: "Step 3. Architecture. Attention and feed-forward layers stack into a full GPT model." },
+      { from: step(3), to: hub1, label: "Three foundations combine into one architecture. This is Building an LLM." },
+      { from: hub1, to: step(4), label: "Step 4. Pretraining. The architecture learns from raw text, one token at a time." },
+      { from: step(4), to: step(5), label: "Step 5. Training loop. The optimizer and gradient steps update the weights." },
+      { from: step(5), to: step(6), label: "Step 6. Model evaluation. Loss curves and sample generations show if it works." },
+      { from: step(6), to: step(7), label: "Step 7. Load pretrained weights. Real GPT-2 weights validate the architecture." },
+      { from: step(7), to: hub2, label: "The result is a general-purpose Foundation Model." },
+      { from: hub2, to: step(8), label: "Step 8. Fine-tune on labeled data." },
+      { from: step(8), to: outClassifier, label: "This creates a Classifier." },
+      { from: hub2, to: step(9), label: "Step 9. Fine-tune on instructions." },
+      { from: step(9), to: outAssistant, label: "This creates a Personal Assistant." },
     ];
 
     for (const hop of hops) {
@@ -1062,7 +1268,7 @@
 
     if (token !== flowToken) return;
     flowDot.hidden = true;
-    flowStatus.textContent = "Flow complete — click any step for details, or press play again.";
+    flowStatus.textContent = "Flow complete. Click any step for details, or press play again.";
     playFlowBtn.disabled = false;
   }
 
