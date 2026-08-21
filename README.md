@@ -20,7 +20,7 @@ Scope is deliberately trimmed to what directly serves that goal: tokenization, a
 
 **Phase 1 — Neural Network Foundations: Completed ✅**
 **Phase 2 — Text Data & Embeddings: Completed ✅**
-**Phase 3 — Attention & GPT Architecture: In Progress 🔄 (attention mechanisms complete)**
+**Phase 3 — Attention & GPT Architecture: Completed ✅**
 
 ## Phase 1 — Neural Network Foundations
 
@@ -36,9 +36,11 @@ Covers tokenization from scratch through to model-ready batches: byte-pair encod
 
 ## Phase 3 — Attention & GPT Architecture
 
-In progress. Covers the attention mechanism from first principles: simplified self-attention, self-attention with trainable query/key/value weights, causal (masked) attention with dropout, and multi-head attention (both the simple parallel-heads wrapper and the more efficient single-weight-matrix implementation) — built and exercised hands-on in `Foundation_Concepts/LLM_Design_Stage_1/`.
+Covers the attention mechanism from first principles: simplified self-attention, self-attention with trainable query/key/value weights, causal (masked) attention with dropout, and multi-head attention (both the simple parallel-heads wrapper and the more efficient single-weight-matrix implementation) — through to full GPT model assembly: layer normalization, GELU activation, feed-forward blocks, transformer blocks (with shortcut connections), the complete `GPTModel`, and a simple text-generation loop — built and exercised hands-on in `Foundation_Concepts/LLM_Design_Stage_1/`.
 
 ![Stage 1 — Step 2 Attention Mechanism](Foundation_Concepts/LLM_Design_Stage_1/Stage1_Step2_Attention_Mechanism.png)
+
+![Stage 1 — Step 3 LLM Architecture](Foundation_Concepts/LLM_Design_Stage_1/Stage1_Step3_LLMArchitecture.png)
 
 ## Primary Resources
 
@@ -59,10 +61,12 @@ In progress. Covers the attention mechanism from first principles: simplified se
 │   └── LLM_Design_Stage_1/
 │       ├── Data_Prepration.py                           # tokenizer, sliding-window dataset, dataloader
 │       ├── Attention_Mechanism.py                       # self-attention, causal attention, multi-head attention
+│       ├── GPT_Architecture.py                          # layer norm, GELU, feed-forward, transformer block, GPTModel
 │       ├── the-verdict.txt                              # sample text used for Phase 2 exercises
 │       ├── Stage1_ Step1_DataPrep.png
 │       ├── Stage1_Step2_Attention_Mechanism.png
-│       └── Misc/                                        # earlier tokenizer exploration scripts
+│       ├── Stage1_Step3_LLMArchitecture.png
+│       └── Misc/                                        # earlier tokenizer/shortcut-connection exploration scripts
 ├── pyproject.toml
 ├── main.py
 └── README.md
